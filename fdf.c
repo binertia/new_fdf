@@ -119,7 +119,6 @@ void	ft_new_list_add_back(int **content, t_node **node)
 
 	if (!content)
 		return ;
-	printf("finish add\n");
 	if (*node == NULL)
 	{
 		*node = ft_new_list(content);
@@ -562,9 +561,9 @@ int	main(int ac, char *av[])
 	calc_init_draw(&img, &ref);
 	draw_background(&img, 2560, 1390, 0x7C81AD);
 	draw_map_to_img(map, &img);
+	ft_free_node(&map);
 	mlx_put_image_to_window(var.mlx, var.win, img.img, 0, 0);
 	mlx_hook(var.win, 2, 0, win_close, &var);
 	mlx_loop(var.mlx);
-	ft_free_node(&map);
 	return (0);
 }
