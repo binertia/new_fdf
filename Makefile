@@ -1,55 +1,56 @@
 NAME		=	fdf
-GNL			=	get_next_line/
+GETN		=	get_next_line/
 MLX			=	minilibx/
-GNL_A		=	$(addprefix $(GNL), libgnl.a)
-MLX_A		=	$(addprefix $(MLX), libmlx.a)
+GETN_A		=	get_next_line/libgetn.a
+MLX_A		=	minilibx/libmlx.a
 
-CC			=	gcc
-INCLUDE 	=	includes
-CFLAGS		=	-I$(INCLUDE)
-RM			=	rm -f
-SRCS		=	fdf.c
+CC			=	cc
+CFLAG		=	-Iincludes
+RM			=	rm -rf
+SRCS		=	fdf.c						\
+				srcs/ft_calc.c				\
+				srcs/ft_draw.c				\
+				srcs/ft_get_input.c			\
+				srcs/ft_list.c				\
+				srcs/ft_make_map.c			\
+				srcs/ft_valid_and_free.c	\
 
 OBJS		=	$(SRCS:%.c=%.o)
 
+.PHONY:			all clean fclean re localclean bonus
+
 all:			$(NAME)
 
-$(NAME):		$(OBJS)  $(GNL_A) $(MLX_A)
-				@$(CC) $(CFLAGS) $(OBJS) -L$(GNL) -lgnl -L$(MLX) -lmlx -lm -o $(NAME) -framework OpenGL -framework AppKit
-				@echo "Linked"
+$(NAME):		$(OBJS)  $(GETN_A) $(MLX_A)
+				@$(CC) $(CFLAG) $(OBJS) -L$(GETN) -lgetn -L$(MLX) -lmlx -lm -o $(NAME) -framework OpenGL -framework AppKit
+				@echo "Hello FDF"
 
-$(GNL_A):
-				@$(MAKE) -s -C $(GNL)
-				@echo "Compiled $(GNL_A)."
+$(GETN_A):
+				@$(MAKE) -s -C $(GETN)
+				@echo "GET_NEXT_LINE is ready"
 
 $(MLX_A):
 				@$(MAKE) -s -C $(MLX)
-				@echo "Compiled $(MLX_A)."
+				@echo "MLX has join the chat"
 
-bonus:			all
 
 .c.o:
 				@$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
-				@echo "Compiling $<."
+				@echo "Compiling with Love."
 
-localclean:
+del:
 				@$(RM) $(OBJS)
-				@echo "Removed object files."
+				@echo "Kill object."
 
-clean:			localclean
-				@$(MAKE) clean -s -C $(GNL)
-				@echo "Clean gnl."
+clean:			del
+				@$(MAKE) clean -s -C $(GETN)
 				@$(MAKE) clean -s -C $(MLX)
-				@echo "Clean mlx."
 
-fclean:			localclean
-				@$(MAKE) fclean -s -C $(GNL)
-				@echo "Full clean gnl."
+fclean:			del
+				@$(MAKE) fclean -s -C $(GETN)
 				@$(MAKE) clean -s -C $(MLX)
-				@echo "Clean mlx."
 				@$(RM) $(NAME)
-				@echo "Removed executable."
+				@echo "Execution file has gone."
 
 re:				fclean all
 
-.PHONY:			all clean fclean re localclean bonus
